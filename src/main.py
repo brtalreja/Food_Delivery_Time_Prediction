@@ -48,3 +48,21 @@ for i in range(len(data)):
                                             data.loc[i, 'Delivery_location_longitude'])
 
 print(data.head())
+
+#EDA
+
+#Relation between distance and time taken to deliver the food.
+
+figure = px.scatter(data_frame = data,
+                    x = "distance",
+                    y = "Time_taken(min)",
+                    size = "Time_taken(min)",
+                    trendline = "ols",
+                    title = "Relationship between Distance and Time Taken",
+                    labels = {"distance": "Distance", "Time_taken(min)": "Time Taken (mins)"})
+
+figure.show()
+
+figure.write_image("../output/relationship_between_distance_and_delivery_time.png")
+
+#COMMENT: 
