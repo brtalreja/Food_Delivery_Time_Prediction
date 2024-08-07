@@ -133,3 +133,22 @@ figure.write_image("../output/relationship_between_time_taken_and_driver_ratings
 # Drivers with low ratings like 1 have longer delivery times. This could be due to various factors such as lack of familiarity with routes, less efficiency in handling deliveries, or potentially lower motivation.
 # Drivers in 2.5 to 4 rating categories might be in the process of improving their efficiency or might be facing occasional challenges that affect their delivery times.
 # Drivers with high ratings 4 to 5, especially 6 consistently have shorter delivery times despite the longer distance for rating 6 people. Higher-rated drivers are more efficient, likely due to better familiarity with routes, higher motivation, and possibly more experience. This is a positive indicator for using driver ratings as a metric to optimize delivery performance.
+
+#Affect of type of food and type of vehicle used for delivery on time taken for delivery.
+
+figure = px.box(data,
+                x = "Type_of_vehicle",
+                y = "Time_taken(min)",
+                color = "Type_of_order",
+                title = "Affect of Food Type and Delivery Vehicle Type on Time Taken (mins)",
+                labels = {"Type_of_vehicle": "Type of Vehicle", "Type_of_order": "Type of Food", "Time_taken(min)": "Time Taken (mins)"})
+
+figure.show()
+
+figure.write_image("../output/affect_of_food_type_and_delivery_vehicle_type_on_time_taken.png")
+
+# COMMENTS:
+# Electric scooters and scooters provide the most consistent delivery times with tighter IQRs across all food types. While bicycles and motorcycles show more variability in delivery times, which might be due to their limitations in distance and speed.
+# Electric scooters appear to be the most efficient in terms of maintaining lower maximum delivery times and consistent IQRs. Though motorcycles can cover longer distances, the high variability in delivery times can be possibly seen due to traffic conditions and route complexities.
+# The type of food being delivered does not significantly impact the median delivery times across different vehicle types. However, the variability in delivery times (IQR) can be influenced by the vehicle type, with motorized vehicles providing more consistency.
+# For ensuring faster and more consistent delivery times, electric scooters and scooters should be preferred, especially for longer distances. Bicycles can be utilized for shorter and medium-distance deliveries, especially in areas where motorized vehicles might face traffic constraints.
