@@ -65,4 +65,14 @@ figure.show()
 
 figure.write_image("../output/relationship_between_distance_and_delivery_time.png")
 
-#COMMENT: 
+# COMMENTS: 
+# Observations:
+# From the scatter plot, we can see two distinct clusters, i.e., first one around 5k distance and second around 20k distance.
+# For distances around 5k, the time taken shows a variation between 10 minutes and 50 minutes.
+# For distances around 20k, the time taken is again varied but appears to be slightly concentrated between 20 minutes to 40 minutes.
+# The blue trend line seems horizontal which indicates that there is no strong correlation between distance and time taken in this data set.
+# 
+# Insights:
+# As the horizontal trend line tells that the time taken does not increase linearly with the distance. The reasons for this could be due to various factors such as traffic conditions, varying speed limits, or differences in the time required for short vs. long distances.
+# The distinct clusters might indicate that the distances are not continuous but rather fall into specific categories (e.g., different zones for delivery, specific routes, etc.). 
+# The wide range of time taken for each distance suggests high variability, possibly due to external factors not captured in the data, such as waiting times, delivery handling times, or service efficiency.
