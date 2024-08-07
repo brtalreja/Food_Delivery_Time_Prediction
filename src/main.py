@@ -105,3 +105,31 @@ figure.write_image("../output/relationship_between_driver_age_and_time_taken.png
 # Drivers in the 15-29 age group generally have lower delivery times. The variability in delivery time within this group could be due to factors such as experience, familiarity with routes, and possibly higher physical stamina.
 # Drivers in the 30-39 age group shows a wider range of delivery times, which could be attributed to a mix of factors including type of delivery vehicle, varying levels of experience, differences in driving habits, and potentially more cautious driving behavior compared to younger drivers.
 # Drivers in their 50s, tend to have longer delivery times. This could be due to more cautious driving, possible physical limitations, or preference for routes that might be less congested but longer in distance.
+
+#Relationship between delivery time and the ratings of the delivery partner.
+
+figure = px.scatter(data_frame = data,
+                    x = "Delivery_person_Ratings",
+                    y = "Time_taken(min)",
+                    size = "Time_taken(min)",
+                    color = "distance",
+                    trendline = "ols",
+                    title = "Relationship between Time Taken (mins) and Driver's Ratings",
+                    labels = {"Time_taken(min)":"Time Taken (mins)","distance":"Distance","Delivery_person_Ratings":"Delivery person's Ratings"})
+
+figure.show()
+
+figure.write_image("../output/relationship_between_time_taken_and_driver_ratings.png")
+
+# COMMENTS:
+# Observations:
+# From the scatter plot, we can see various distinct clusters as per the ratings, majority of the clusters can be seen between rating 4 and 5, there are clusters for ratings 1, 2.5 to 4, and 6 as well.
+# For most of the ratings, we can see a variation between 10 minutes to 54 minutes for 3 to 20 units of distance.
+# Drivers with ratings 1 and 6 were seen to go for longer delivery routes. A lot of delivery partners who went for longer deliveries received a 6 rating.
+# The trend line shows an inverse linear relationship between driver's ratings and the time taken for delivery. This indicates that delivery partners with higher ratings take less time to deliver the food compared to the partners with lower ratings.
+# 
+# Insights:
+# beta1 = -9.48, beta0 = 70.21, R_squared = 0.11. As the rating of the driver increases, the time taken for delivery tends to decrease. Specifically, for each additional rating of the driver, the delivery time decreases by approximately 9.48 minutes on average.
+# Drivers with low ratings like 1 have longer delivery times. This could be due to various factors such as lack of familiarity with routes, less efficiency in handling deliveries, or potentially lower motivation.
+# Drivers in 2.5 to 4 rating categories might be in the process of improving their efficiency or might be facing occasional challenges that affect their delivery times.
+# Drivers with high ratings 4 to 5, especially 6 consistently have shorter delivery times despite the longer distance for rating 6 people. Higher-rated drivers are more efficient, likely due to better familiarity with routes, higher motivation, and possibly more experience. This is a positive indicator for using driver ratings as a metric to optimize delivery performance.
