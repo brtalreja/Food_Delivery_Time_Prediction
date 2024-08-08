@@ -152,3 +152,80 @@ figure.write_image("../output/affect_of_food_type_and_delivery_vehicle_type_on_t
 # Electric scooters appear to be the most efficient in terms of maintaining lower maximum delivery times and consistent IQRs. Though motorcycles can cover longer distances, the high variability in delivery times can be possibly seen due to traffic conditions and route complexities.
 # The type of food being delivered does not significantly impact the median delivery times across different vehicle types. However, the variability in delivery times (IQR) can be influenced by the vehicle type, with motorized vehicles providing more consistency.
 # For ensuring faster and more consistent delivery times, electric scooters and scooters should be preferred, especially for longer distances. Bicycles can be utilized for shorter and medium-distance deliveries, especially in areas where motorized vehicles might face traffic constraints.
+
+#Delivery time prediction model
+
+from sklearn.model_selection import train_test_split
+
+x = np.array(data[["Delivery_person_Age", "Delivery_person_Ratings", "distance"]])
+y = np.array(data[['Time_taken(min)']])
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.10, random_state=42)
+
+#LSTM model
+from keras.models import Sequential
+from keras.layers import Dense, LSTM
+
+model = Sequential()
+model.add(LSTM(128, return_sequences = True, input_shape = (x_train.shape[1], 1)))
+model.add(LSTM(64, return_sequences = False))
+model.add(Dense(25))
+model.add(Dense(1))
+model.summary()
+
+#Training the model
+model.compile(optimizer = "adam", loss = "mean_squared_error")
+model.fit(x_train, y_train, batch_size = 1, epochs = 9)
+
+#Testing the model
+
+print("Food Delivery Time Predictor")
+a = int(input("Age of Delivery Partner: "))
+b = float(input("Ratings of Previous Deliveries: "))
+c = int(input("Total Distance: "))
+
+features = np.array([[a, b, c]])
+print("Predicted delivery time in minutes = ", model.predict(features))
+
+# Output for reference:
+# Model: "sequential"
+# ┌──────────────────────────────────────┬─────────────────────────────┬─────────────────┐
+# │ Layer (type)                         │ Output Shape                │         Param # │
+# ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+# │ lstm (LSTM)                          │ (None, 3, 128)              │          66,560 │
+# ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+# │ lstm_1 (LSTM)                        │ (None, 64)                  │          49,408 │
+# ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+# │ dense (Dense)                        │ (None, 25)                  │           1,625 │
+# ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+# │ dense_1 (Dense)                      │ (None, 1)                   │              26 │
+# └──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+#  Total params: 117,619 (459.45 KB)
+#  Trainable params: 117,619 (459.45 KB)
+#  Non-trainable params: 0 (0.00 B)
+# Epoch 1/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m101s←[0m 2ms/step - loss: 75.5305
+# Epoch 2/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m99s←[0m 2ms/step - loss: 64.5294
+# Epoch 3/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m80s←[0m 2ms/step - loss: 62.4145
+# Epoch 4/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m73s←[0m 2ms/step - loss: 60.5329
+# Epoch 5/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m91s←[0m 2ms/step - loss: 60.1548
+# Epoch 6/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m98s←[0m 2ms/step - loss: 59.6412
+# Epoch 7/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m94s←[0m 2ms/step - loss: 58.8463
+# Epoch 8/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m94s←[0m 2ms/step - loss: 60.0760
+# Epoch 9/9
+# ←[1m41033/41033←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m89s←[0m 2ms/step - loss: 58.8106
+# Food Delivery Time Predictor
+# Age of Delivery Partner: 29
+# Ratings of Previous Deliveries: 2.9
+# Total Distance: 6
+# ←[1m1/1←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m0s←[0m 210ms/step
+# Predicted delivery time in minutes =  [[40.782604]]
+
+# COMMENTS:
