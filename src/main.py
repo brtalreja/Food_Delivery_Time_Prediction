@@ -233,3 +233,29 @@ print("Predicted delivery time in minutes = ", model.predict(features))
 # Our predicted time is 40.78 minutes which lies in the aforementioned range.
 # However, as we saw that the delivery partner's rating and delivery time are inversely proportional.
 # A low rating of 2.9 suggests there is room for improvement and as the delivery partner's delivery time will reduce, the rating should increase.
+
+#Testing the model on test data.
+x_test_reshaped = x_test.reshape((x_test.shape[0], x_test.shape[1], 1))
+
+print("Shape of x_test_reshaped:", x_test_reshaped.shape)
+
+y_pred = model.predict(x_test_reshaped)
+
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+mse = mean_squared_error(y_test, y_pred)
+print("Mean Squared Error (MSE):", mse)
+
+mae = mean_absolute_error(y_test, y_pred)
+print("Mean Absolute Error (MAE):", mae)
+
+r2 = r2_score(y_test, y_pred)
+print("R-squared (R²):", r2)
+
+# 143/143 [==============================] - 1s 3ms/step
+# Mean Squared Error (MSE): 55.89161352435876
+# Mean Absolute Error (MAE): 5.815907666557713
+# R-squared (R²): 0.35977780211349264
+
+# COMMENTS:
+# The model explains only 36% of the variance in the target variable and isn't capturing the underlying patterns in the data well.
