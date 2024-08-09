@@ -3,6 +3,12 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import math
+from sklearn.model_selection import train_test_split
+from keras.models import Sequential
+from keras.layers import Dense, LSTM
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import keras_tuner as kt
 
 #Loading the data
 data = pd.read_csv("../data/deliverytime.txt")
@@ -155,16 +161,12 @@ figure.write_image("../output/affect_of_food_type_and_delivery_vehicle_type_on_t
 
 #Delivery time prediction model
 
-from sklearn.model_selection import train_test_split
-
 x = np.array(data[["Delivery_person_Age", "Delivery_person_Ratings", "distance"]])
 y = np.array(data[['Time_taken(min)']])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.10, random_state=42)
 
 #LSTM model
-from keras.models import Sequential
-from keras.layers import Dense, LSTM
 
 model = Sequential()
 model.add(LSTM(128, return_sequences = True, input_shape = (x_train.shape[1], 1)))
@@ -241,7 +243,6 @@ print("Shape of x_test_reshaped:", x_test_reshaped.shape)
 
 y_pred = model.predict(x_test_reshaped)
 
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 mse = mean_squared_error(y_test, y_pred)
 print("Mean Squared Error (MSE):", mse)
@@ -259,3 +260,143 @@ print("R-squared (R²):", r2)
 
 # COMMENTS:
 # The model explains only 36% of the variance in the target variable and isn't capturing the underlying patterns in the data well.
+
+#Hyperparameter Tuning.
+
+#Tuning various parameters to change the model structure.
+def build_model(hp):
+    model = Sequential()
+
+    model.add(LSTM(units=hp.Int('units_1', min_value=32, max_value=256, step=32), return_sequences=True, input_shape=(x_train.shape[1], 1)))
+
+    if hp.Boolean('use_second_lstm'):
+        model.add(LSTM(units=hp.Int('units_2', min_value=32, max_value=128, step=32), return_sequences=False))
+    
+    model.add(Dense(units=hp.Int('dense_units', min_value=16, max_value=64, step=16)))
+    
+    model.add(Dense(1))
+    
+    model.compile(optimizer=hp.Choice('optimizer', values=['adam', 'rmsprop']),
+                  loss='mean_squared_error')
+    return model
+
+#Defining a keras tuner.
+tuner = kt.Hyperband(build_model,
+                     objective='val_loss',
+                     max_epochs=10,
+                     factor=3,
+                     directory='tuner_dir',
+                     project_name='delivery_time_prediction')
+
+
+math.prod = np.prod
+
+def prod(iterable):
+    result = 1
+    for n in iterable:
+        result *= n
+    return result
+
+math.prod = prod
+
+#Search the best validation loss model.
+tuner.search(x_train, y_train, epochs=10, validation_split=0.1)
+
+# OUTPUT:
+# Trial 26 Complete [00h 01m 46s]
+# val_loss: 55.90714645385742
+# 
+# Best val_loss So Far: 55.90714645385742
+# Total elapsed time: 00h 18m 24s
+
+#Build the best hypertuned model.
+best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+best_model = tuner.hypermodel.build(best_hps)
+best_model.summary()
+
+# Model: "sequential_1"
+# _________________________________________________________________
+#  Layer (type)                Output Shape              Param #   
+# =================================================================
+#  lstm_2 (LSTM)               (None, 3, 224)            202496    
+#                                                                  
+#  lstm_3 (LSTM)               (None, 96)                123264    
+#                                                                  
+#  dense_2 (Dense)             (None, 48)                4656      
+#                                                                  
+#  dense_3 (Dense)             (None, 1)                 49        
+#                                                                  
+# =================================================================
+# Total params: 330,465
+# Trainable params: 330,465
+# Non-trainable params: 0
+# _________________________________________________________________
+
+#Fit the best hypertuned model.
+best_model.fit(x_train, y_train, epochs=10, validation_split=0.1)
+
+# Epoch 1/10
+# 1155/1155 [==============================] - 13s 9ms/step - loss: 80.0099 - val_loss: 64.9712
+# Epoch 2/10
+# 1155/1155 [==============================] - 10s 9ms/step - loss: 65.6189 - val_loss: 62.9452
+# Epoch 3/10
+# 1155/1155 [==============================] - 10s 8ms/step - loss: 62.8443 - val_loss: 59.9478
+# Epoch 4/10
+# 1155/1155 [==============================] - 9s 8ms/step - loss: 61.7201 - val_loss: 59.5722
+# Epoch 5/10
+# 1155/1155 [==============================] - 10s 9ms/step - loss: 60.7775 - val_loss: 59.1899
+# Epoch 6/10
+# 1155/1155 [==============================] - 10s 9ms/step - loss: 60.0641 - val_loss: 57.8616
+# Epoch 7/10
+# 1155/1155 [==============================] - 10s 9ms/step - loss: 59.7251 - val_loss: 58.3385
+# Epoch 8/10
+# 1155/1155 [==============================] - 10s 9ms/step - loss: 59.1028 - val_loss: 56.6811
+# Epoch 9/10
+# 1155/1155 [==============================] - 10s 9ms/step - loss: 58.7261 - val_loss: 56.4427
+# Epoch 10/10
+# 1155/1155 [==============================] - 11s 9ms/step - loss: 58.3225 - val_loss: 55.7493
+
+#Compile the model with required metrics to get the results results.
+best_model.compile(optimizer='adam', loss='mse', metrics=['mse', 'mae'])
+
+test_loss, test_mse, test_mae = best_model.evaluate(x_test, y_test)
+
+#Test data error measurement.
+print(f"Test Loss: {test_loss}")
+print(f"Test Mean Squared Error (MSE): {test_mse}")
+print(f"Test Mean Absolute Error (MAE): {test_mae}")
+
+
+
+#Predict the delivery time.
+y_pred = best_model.predict(x_test)
+
+#Get the predicted and original output in the same format.
+y_pred = y_pred.flatten()
+y_test = y_test.flatten()
+
+fig = px.scatter(
+    x=y_test, 
+    y=y_pred, 
+    labels={'x': 'True Values', 'y': 'Predicted Values'}, 
+    title='True vs. Predicted Values'
+)
+
+fig.add_shape(
+    type="line", 
+    x0=min(y_test), y0=min(y_test), 
+    x1=max(y_test), y1=max(y_test),
+    line=dict(color="red", dash="dash")
+)
+
+fig.show()
+
+fig.write_image("../output/Final.png")
+
+best_model.save('best_model.h5')
+
+# 143/143 [==============================] - 2s 4ms/step - loss: 55.9720 - mse: 55.9720 - mae: 5.8443
+# Test Loss: 55.97201156616211
+# Test Mean Squared Error (MSE): 55.97201156616211
+# Test Mean Absolute Error (MAE): 5.8442816734313965
+# 143/143 [==============================] - 1s 4ms/step
