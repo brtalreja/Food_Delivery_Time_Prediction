@@ -228,4 +228,8 @@ print("Predicted delivery time in minutes = ", model.predict(features))
 # ←[1m1/1←[0m ←[32m━━━━━━━━━━━━━━━━━━━━←[0m←[37m←[0m ←[1m0s←[0m 210ms/step
 # Predicted delivery time in minutes =  [[40.782604]]
 
-# COMMENTS:
+# COMMENTS: 
+# As we saw in our EDA, the delivery time for a 29 years old delivery partner is in the range of 3 to 54 minutes, despite the distance.
+# Our predicted time is 40.78 minutes which lies in the aforementioned range.
+# However, as we saw that the delivery partner's rating and delivery time are inversely proportional.
+# A low rating of 2.9 suggests there is room for improvement and as the delivery partner's delivery time will reduce, the rating should increase.
