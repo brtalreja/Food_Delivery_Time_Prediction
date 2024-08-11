@@ -107,7 +107,7 @@ The model successfully learned from the training data and can predict the time i
 
 This project builds on the foundational work provided in The Clever Programmer's Food Delivery Time Prediction using Python by expanding the analysis to provide deeper insights into various other aspects of the delivery time prediction.
 
-## References:
+## References
 1. [Project Reference](https://thecleverprogrammer.com/2023/01/02/food-delivery-time-prediction-using-python/)
 2. [Dataset](https://statso.io/food-delivery-time-prediction-case-study/)
 3. [Haversine Distance](https://en.wikipedia.org/wiki/Haversine_formula)
@@ -117,5 +117,5 @@ This project builds on the foundational work provided in The Clever Programmer's
 7. [Hyperparameter Tuning](https://www.geeksforgeeks.org/hyperparameter-tuning/#)
 8. [Hyperparameter Tuning using Keras Tuner](https://keras.io/keras_tuner/)
 
-## Citations:
+## Citations
 ![KerasTuner, O'Malley, Tom and Bursztein, Elie and Long, James and Chollet, Fran\c{c}ois and Jin, Haifeng and Invernizzi, Luca and others}, 2019](https://github.com/keras-team/keras-tuner)
