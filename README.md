@@ -51,6 +51,8 @@ Why LSTM is good for this task?
 - Delivery data can be noisy due to the fluctuations caused by unexpected events (e.g., sudden weather changes or roadblocks). However, LSTMs are robust to such noise as they focus on the most relevant parts of the data sequence rather than getting affected by the noise.
 - LSTM models can handle multivariate time-series data which allows learning complex interactions between features over time.
 
+### About the model
+
 - Model: "sequential"
 
 | Model Layer | Output Shape | Param # |
