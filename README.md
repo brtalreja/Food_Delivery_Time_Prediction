@@ -36,21 +36,30 @@ The distance between the restaurant and the delivery location is calculated usin
 
 ![Relationship Between Time Taken And Driver's Ratings](output/relationship_between_time_taken_and_driver_ratings.png)
 
-#### Affect of type of food and type of vehicle used for delivery on time taken for delivery:
+#### Effect of type of food and type of vehicle used for delivery on time taken for delivery:
 - To analyze the if and how the type of food ordered by the customer and the type of vehicle used by the delivery partner influences delivery time of the food by the delivery partner.
 
-![Affect Of Food Type And Delivery Vehicle Type On Time Taken](output/affect_of_food_type_and_delivery_vehicle_type_on_time_taken.png)
+![Effect Of Food Type And Delivery Vehicle Type On Time Taken](output/effect_of_food_type_and_delivery_vehicle_type_on_time_taken.png)
 
 ## Model Building
 
 A Long Short-Term Memory (LSTM) model was used to predict delivery times based on the delivery person's age, ratings, and the distance to be covered.
 
+Why LSTM is good for this task?
+- LSTM networks are designed to capture and model temporal dependencies which making them ideal for predicting time-related outcomes.
+- Unlike traditional RNNs, LSTMs are specifically designed to learn long-term dependencies. In the context of food delivery, the model can effectively learn how past events (like previous delivery times or past traffic patterns) can influence future deliveries which eventually leads to more accurate predictions.
+- Delivery data can be noisy due to the fluctuations caused by unexpected events (e.g., sudden weather changes or roadblocks). However, LSTMs are robust to such noise as they focus on the most relevant parts of the data sequence rather than getting affected by the noise.
+- LSTM models can handle multivariate time-series data which allows learning complex interactions between features over time.
+
 - Model: "sequential"
-- │ Layer (type)                 │ Output Shape                │         Param # │
-- │ lstm (LSTM)                  │ (None, 3, 128)              │          66,560 │
-- │ lstm_1 (LSTM)                │ (None, 64)                  │          49,408 │
-- │ dense (Dense)                │ (None, 25)                  │           1,625 │
-- │ dense_1 (Dense)              │ (None, 1)                   │              26 │
+
+| Model Layer | Output Shape | Param # |
+|-------------|--------------|---------|
+| LSTM        | (None, 3, 128) | 66,560  |
+| LSTM_1      | (None, 64)    | 49,408  |
+| Dense       | (None, 25)    | 1,625   |
+| Dense_1     | (None, 1)     | 26      |
+
 -  Total params: 117,619
 -  Trainable params: 117,619
 -  Non-trainable params: 0
@@ -67,11 +76,14 @@ Example of model working:
 To improve the model's performance, hyperparameter tuning was done by tuning number of epochs, number of dense layers, number of lstm layers, and the choice of optimizer.
 
 - Model: "sequential_1"
-- │ Layer (type)                │ Output Shape                │         Param # │
-- │ lstm_2 (LSTM)               │ (None, 3, 224)              │          202496 │
-- │ lstm_3 (LSTM)               │ (None, 96)                  │          123264 │
-- │ dense_2 (Dense)             │ (None, 48)                  │            4656 │
-- │ dense_3 (Dense)             │ (None, 1)                   │              49 │
+
+| Model Layer | Output Shape | Param # |
+|-------------|--------------|---------|
+| LSTM_2      | (None, 3, 224) | 202,496  |
+| LSTM_3      | (None, 96)    | 123,264  |
+| Dense_2       | (None, 48)    | 4,656   |
+| Dense_3     | (None, 1)     | 49      |
+
 - Total params: 330,465
 - Trainable params: 330,465
 - Non-trainable params: 0
