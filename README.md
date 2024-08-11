@@ -46,17 +46,11 @@ The distance between the restaurant and the delivery location is calculated usin
 A Long Short-Term Memory (LSTM) model was used to predict delivery times based on the delivery person's age, ratings, and the distance to be covered.
 
 - Model: "sequential"
-- ┌──────────────────────────────┬─────────────────────────────┬─────────────────┐
 - │ Layer (type)                 │ Output Shape                │         Param # │
-- ├──────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ lstm (LSTM)                  │ (None, 3, 128)              │          66,560 │
-- ├──────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ lstm_1 (LSTM)                │ (None, 64)                  │          49,408 │
-- ├──────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ dense (Dense)                │ (None, 25)                  │           1,625 │
-- ├──────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ dense_1 (Dense)              │ (None, 1)                   │              26 │
-- └──────────────────────────────┴─────────────────────────────┴─────────────────┘
 -  Total params: 117,619
 -  Trainable params: 117,619
 -  Non-trainable params: 0
@@ -73,17 +67,11 @@ Example of model working:
 To improve the model's performance, hyperparameter tuning was done by tuning number of epochs, number of dense layers, number of lstm layers, and the choice of optimizer.
 
 - Model: "sequential_1"
-- ┌─────────────────────────────┬─────────────────────────────┬─────────────────┐
 - │ Layer (type)                │ Output Shape                │         Param # │
-- ├─────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ lstm_2 (LSTM)               │ (None, 3, 224)              │          202496 │
-- ├─────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ lstm_3 (LSTM)               │ (None, 96)                  │          123264 │
-- ├─────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ dense_2 (Dense)             │ (None, 48)                  │            4656 │
-- ├─────────────────────────────┼─────────────────────────────┼─────────────────┤
 - │ dense_3 (Dense)             │ (None, 1)                   │              49 │
-- └─────────────────────────────┴─────────────────────────────┴─────────────────┘
 - Total params: 330,465
 - Trainable params: 330,465
 - Non-trainable params: 0
@@ -116,4 +104,4 @@ This project builds on the foundational work provided in The Clever Programmer's
 8. [Hyperparameter Tuning using Keras Tuner](https://keras.io/keras_tuner/)
 
 ## Citations:
-KerasTuner, O'Malley, Tom and Bursztein, Elie and Long, James and Chollet, Fran\c{c}ois and Jin, Haifeng and Invernizzi, Luca and others}, 2019, https://github.com/keras-team/keras-tuner
+![KerasTuner, O'Malley, Tom and Bursztein, Elie and Long, James and Chollet, Fran\c{c}ois and Jin, Haifeng and Invernizzi, Luca and others}, 2019](https://github.com/keras-team/keras-tuner)
