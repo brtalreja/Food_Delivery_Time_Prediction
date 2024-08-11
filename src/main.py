@@ -140,18 +140,18 @@ figure.write_image("../output/relationship_between_time_taken_and_driver_ratings
 # Drivers in 2.5 to 4 rating categories might be in the process of improving their efficiency or might be facing occasional challenges that affect their delivery times.
 # Drivers with high ratings 4 to 5, especially 6 consistently have shorter delivery times despite the longer distance for rating 6 people. Higher-rated drivers are more efficient, likely due to better familiarity with routes, higher motivation, and possibly more experience. This is a positive indicator for using driver ratings as a metric to optimize delivery performance.
 
-#Affect of type of food and type of vehicle used for delivery on time taken for delivery.
+#Effect of type of food and type of vehicle used for delivery on time taken for delivery.
 
 figure = px.box(data,
                 x = "Type_of_vehicle",
                 y = "Time_taken(min)",
                 color = "Type_of_order",
-                title = "Affect of Food Type and Delivery Vehicle Type on Time Taken (mins)",
+                title = "Effect of Food Type and Delivery Vehicle Type on Time Taken (mins)",
                 labels = {"Type_of_vehicle": "Type of Vehicle", "Type_of_order": "Type of Food", "Time_taken(min)": "Time Taken (mins)"})
 
 figure.show()
 
-figure.write_image("../output/affect_of_food_type_and_delivery_vehicle_type_on_time_taken.png")
+figure.write_image("../output/effect_of_food_type_and_delivery_vehicle_type_on_time_taken.png")
 
 # COMMENTS:
 # Electric scooters and scooters provide the most consistent delivery times with tighter IQRs across all food types. While bicycles and motorcycles show more variability in delivery times, which might be due to their limitations in distance and speed.
